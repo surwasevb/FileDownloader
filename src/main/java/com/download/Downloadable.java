@@ -12,11 +12,7 @@ import java.io.Writer;
  */
 public interface Downloadable {
 	
-	InputStream start(String URL);	
-
-	void pause(InputStream inputStream, Writer writer);
-	
-	void resume(String URL, String location);
+	InputStream start(String URL);
 	
 	long processStream(InputStream inputStream, Writer writer);
 
