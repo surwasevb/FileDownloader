@@ -83,6 +83,7 @@ public class FileDownloader implements Downloadable, Resumable {
 
 			downloadFile.write(buffer, 0, readCount);
 			downloaded += readCount;
+			FileUtility.showDownloadProgress(downloaded, size);
 		}
 
 		inputStream.close();

@@ -50,7 +50,13 @@ public class FileUtility {
 
 	// show progress of download
 	public static void showDownloadProgress(long downloaded, long size) {
-		System.out.print(".");
+		int percentageOfDownload = (int) (downloaded*100/size);
+		System.out.print("\r");
+		System.out.print(" Downloading " + percentageOfDownload  + "%");
+		if(downloaded == size){
+			System.out.print("\r");
+			System.out.print(" Download Complete \n");
+		}
 		return;
 	}
 

@@ -20,7 +20,7 @@ public class Main {
 
 		String fileURL = args[0];
 		String directoryLocation = args[1];
-
+		System.out.println("############## Downloading file from URL ##############");
 		FileDownloader fileDownloader = new FileDownloader();
 
 		try {
