@@ -3,17 +3,20 @@
  */
 package com.download;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.Writer;
 
 /**
  * @author vijay
- *
+ * 
+ *         This is generic interface for downloading the things.
+ * 
  */
 public interface Downloadable {
-	
-	InputStream start(String URL);
-	
-	long processStream(InputStream inputStream, Writer writer);
+
+	InputStream startDownload(String URL) throws IOException;
+
+	long processStream(InputStream inputStream, File writer) throws IOException;
 
 }

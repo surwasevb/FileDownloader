@@ -3,3 +3,7 @@
 .gradle/
 .git/
 build/
+/bin
+.project
+.classpath
+.settings/
