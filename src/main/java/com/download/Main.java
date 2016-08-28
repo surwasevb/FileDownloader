@@ -25,41 +25,41 @@ public class Main {
     String directoryLocation = args[1];
     System.out.println("############## Downloading file from URL ##############");
 
-    JVMShutdownHook jvmShutdownHook = new JVMShutdownHook();
-    Runtime.getRuntime().addShutdownHook(jvmShutdownHook);
-    jvmShutdownHook.setFileURL(fileURL);
-    jvmShutdownHook.setLocation(directoryLocation);
+    addShutDownHook(fileURL, directoryLocation);
 
     FileDownloader fileDownloader = new FileDownloader();
-
     try {
-
       InputStream inputStream = fileDownloader.startDownload(fileURL, directoryLocation);
-
       fileDownloader.processStream(inputStream, new File(directoryLocation + File.separator
           + fileDownloader.getFileName()));
-
     } catch (UnknownHostException e) {
-      FileDownloader.status = FileUtility.INPUT_ERROR;
+      FileDownloader.status = FileHelper.INPUT_ERROR;
       System.out.println("unable to establish connection with URL of given name");
     } catch (Exception e) {
-      FileDownloader.status = FileUtility.INPUT_ERROR;
+      FileDownloader.status = FileHelper.INPUT_ERROR;
       System.out.println(e.getMessage());
     }
 
   }
 
+  private static void addShutDownHook(String fileURL, String directoryLocation) {
+    JVMShutdownHook jvmShutdownHook = new JVMShutdownHook();
+    jvmShutdownHook.setFileURL(fileURL);
+    jvmShutdownHook.setLocation(directoryLocation);
+    Runtime.getRuntime().addShutdownHook(jvmShutdownHook);
+  }
+
   private static class JVMShutdownHook extends Thread {
 
-    private String FileURL;
+    private String fileURL;
     private String location;
 
     public String getFileURL() {
-      return FileURL;
+      return fileURL;
     }
 
     public void setFileURL(String fileURL) {
-      FileURL = fileURL;
+      this.fileURL = fileURL;
     }
 
     public String getLocation() {
@@ -71,11 +71,9 @@ public class Main {
     }
 
     public void run() {
-
-      if (FileDownloader.status != FileUtility.DOWNLOAD_COMPLETED
-          && FileDownloader.status != FileUtility.INPUT_ERROR) {
-        FileDownloader.status = FileUtility.DOWNLOAD_INTERRUPTED;
-
+      if (FileDownloader.status != FileHelper.DOWNLOAD_COMPLETED
+          && FileDownloader.status != FileHelper.INPUT_ERROR) {
+        FileDownloader.status = FileHelper.DOWNLOAD_INTERRUPTED;
         System.out.println(" Download is not completed. Do you want to abort? (yes/no): ");
         if (new Scanner(System.in).next().equalsIgnoreCase("no")) {
           FileDownloader fileDownloader = new FileDownloader();
@@ -91,8 +89,7 @@ public class Main {
 
   private static void error() {
     System.out.print(" Invalid input parameters : ");
-    System.out
-        .print(" Enter two parameters one for url and second for download location on machine \n");
+    System.out.print(" Enter two parameters one for url and second for download location on machine \n");
     System.exit(0);
   }
 
