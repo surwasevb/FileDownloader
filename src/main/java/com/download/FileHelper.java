@@ -10,21 +10,7 @@ import java.net.URL;
  * 
  */
 public class FileHelper {
-  public enum DownloadStatus{
-    DOWNLOAD_STARTED,
-    DOWNLOAD_PAUSED,
-    DOWNLOAD_COMPLETED,
-    DOWNLOAD_RESUMED,
-    DOWNLOAD_INTERRUPTED,
-    INPUT_ERROR    
-  }
-/*  public static final String DOWNLOAD_STARTED = "Downloading";
-  public static final String DOWNLOAD_PAUSED = "Paused";
-  public static final String DOWNLOAD_COMPLETED = "Completed";
-  public static final String DOWNLOAD_RESUMED = "Resumed";
-  public static final String DOWNLOAD_INTERRUPTED = "Interrupted";
-  public static final String INPUT_ERROR = "Input Error";
-*/
+
   // Get file name from portion of URL.
   public static String getFileNameFromURL(URL url) {
     String fileName = url.getFile();
