@@ -14,67 +14,66 @@ import java.net.URL;
  */
 public class FileUtility {
 
-	public static final String DOWNLOAD_STARTED = "Downloading";
-	public static final String DOWNLOAD_PAUSED = "Paused";
-	public static final String DOWNLOAD_COMPLETED = "Completed";
-	public static final String DOWNLOAD_RESUMED = "Resumed";
-	public static final String DOWNLOAD_INTERRUPTED = "Interrupted";
-	public static final String INPUT_ERROR = "Input Error";
+  public static final String DOWNLOAD_STARTED = "Downloading";
+  public static final String DOWNLOAD_PAUSED = "Paused";
+  public static final String DOWNLOAD_COMPLETED = "Completed";
+  public static final String DOWNLOAD_RESUMED = "Resumed";
+  public static final String DOWNLOAD_INTERRUPTED = "Interrupted";
+  public static final String INPUT_ERROR = "Input Error";
 
-	// Get file name from portion of URL.
-	public static String getFileNameFromURL(URL url) {
+  // Get file name from portion of URL.
+  public static String getFileNameFromURL(URL url) {
 
-		String fileName = url.getFile();
-		return fileName.substring(fileName.lastIndexOf('/') + 1);
-	}
+    String fileName = url.getFile();
+    return fileName.substring(fileName.lastIndexOf('/') + 1);
+  }
 
-	// Get file name from header of the http response
-	public static String getFileNameFromHeader(String disposition) {
+  // Get file name from header of the http response
+  public static String getFileNameFromHeader(String disposition) {
 
-		String fileName = "";
-		if (disposition != null) {
+    String fileName = "";
+    if (disposition != null) {
 
-			int index = disposition.indexOf("filename=");
+      int index = disposition.indexOf("filename=");
 
-			if (index > 0) {
-				fileName = disposition.substring(index + 10,
-						disposition.length() - 1);
-			}
+      if (index > 0) {
+        fileName = disposition.substring(index + 10, disposition.length() - 1);
+      }
 
-		}
-		return fileName;
-	}
+    }
+    return fileName;
+  }
 
-	// check whether file of given name exists in the machine
-	public static boolean checkFileExists(String fileName) {
+  // check whether file of given name exists in the machine
+  public static boolean checkFileExists(String fileName) {
 
-		File file = new File(fileName);
-		if (file.exists() && !file.isDirectory()) {
-			return true;
-		}
-		return false;
-	}
+    File file = new File(fileName);
+    if (file.exists() && !file.isDirectory()) {
+      return true;
+    }
+    return false;
+  }
 
-	// check whether directory of given name exists in the machine
-	public static boolean checkDirectoryExists(String directoryName) {
+  // check whether directory of given name exists in the machine
+  public static boolean checkDirectoryExists(String directoryName) {
 
-		File file = new File(directoryName);
-		if (file.exists() && file.isDirectory()) {
-			return true;
-		}
-		return false;
-	}
+    File file = new File(directoryName);
+    if (file.exists() && file.isDirectory()) {
+      return true;
+    }
+    return false;
+  }
 
-	// show progress of download
-	public static void showDownloadProgress(long downloaded, long size) {
-		int percentageOfDownload = (int) (downloaded * 100 / size);
-		System.out.print("\r");
-		System.out.print(" Downloading " + percentageOfDownload + "%");
-		if (downloaded == size) {
-			System.out.print("\r");
-			System.out.print(" Download Complete \n");
-		}
-		return;
-	}
+  // show progress of download
+  public static void showDownloadProgress(long downloaded, long size) {
+    int percentageOfDownload = (int) (downloaded * 100 / size);
+    System.out.print("\r");
+    System.out.print(" Downloading " + percentageOfDownload + "%");
+    if (downloaded == size) {
+      System.out.print("\r");
+      System.out.print(" Download Complete \n");
+    }
+    return;
+  }
 
 }

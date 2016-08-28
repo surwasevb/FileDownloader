@@ -14,8 +14,8 @@ import java.io.InputStream;
  */
 public interface Resumable {
 
-	void pauseDownload(InputStream inputStream) throws IOException;
+  void pauseDownload(InputStream inputStream) throws IOException;
 
-	void resumeDownload(String URL, String location) throws IOException;
+  void resumeDownload(String URL, String location) throws IOException;
 
 }
