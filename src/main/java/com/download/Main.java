@@ -3,6 +3,7 @@ package com.download;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 /**
@@ -41,7 +42,12 @@ public class Main {
 					new File(directoryLocation + File.separator
 							+ fileDownloader.getFileName()));
 
+		} catch (UnknownHostException e) {
+			FileDownloader.status = FileUtility.INPUT_ERROR;
+			System.out
+					.println("unable to establish connection with URL of given name");
 		} catch (Exception e) {
+			FileDownloader.status = FileUtility.INPUT_ERROR;
 			System.out.println(e.getMessage());
 		}
 
@@ -70,7 +76,8 @@ public class Main {
 
 		public void run() {
 
-			if (FileDownloader.status != FileUtility.DOWNLOAD_COMPLETED) {
+			if (FileDownloader.status != FileUtility.DOWNLOAD_COMPLETED
+					&& FileDownloader.status != FileUtility.INPUT_ERROR) {
 				FileDownloader.status = FileUtility.DOWNLOAD_INTERRUPTED;
 
 				System.out
@@ -89,9 +96,9 @@ public class Main {
 	}
 
 	private static void error() {
-		System.out.println("Error");
+		System.out.print(" Invalid input parameters : ");
 		System.out
-				.println("Enter two parameters one for url and second for download location on machine");
+				.print(" Enter two parameters one for url and second for download location on machine \n");
 		System.exit(0);
 	}
 

@@ -17,8 +17,9 @@ public class FileUtility {
 	public static final String DOWNLOAD_STARTED = "Downloading";
 	public static final String DOWNLOAD_PAUSED = "Paused";
 	public static final String DOWNLOAD_COMPLETED = "Completed";
-	public static final String DownlOAD_RESUMED = "Resumed";
+	public static final String DOWNLOAD_RESUMED = "Resumed";
 	public static final String DOWNLOAD_INTERRUPTED = "Interrupted";
+	public static final String INPUT_ERROR = "Input Error";
 
 	// Get file name from portion of URL.
 	public static String getFileNameFromURL(URL url) {
@@ -49,6 +50,16 @@ public class FileUtility {
 
 		File file = new File(fileName);
 		if (file.exists() && !file.isDirectory()) {
+			return true;
+		}
+		return false;
+	}
+
+	// check whether directory of given name exists in the machine
+	public static boolean checkDirectoryExists(String directoryName) {
+
+		File file = new File(directoryName);
+		if (file.exists() && file.isDirectory()) {
 			return true;
 		}
 		return false;

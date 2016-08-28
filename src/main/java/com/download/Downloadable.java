@@ -17,6 +17,6 @@ public interface Downloadable {
 
 	InputStream startDownload(String URL, String location) throws IOException;
 
-	long processStream(InputStream inputStream, File writer) throws IOException;
+	void processStream(InputStream inputStream, File writer) throws IOException;
 
 }

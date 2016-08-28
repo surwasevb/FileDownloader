@@ -45,6 +45,13 @@ public class FileDownloader implements Downloadable, Resumable {
 	public InputStream startDownload(String fileURL, String location)
 			throws IOException {
 
+		// check directory of given location exists
+		if (!FileUtility.checkDirectoryExists(location)) {
+			System.out.println(" Directory of given name does not exist ");
+			status = FileUtility.INPUT_ERROR;
+			return null;
+		}
+
 		URL URLObject = new URL(fileURL);
 		HttpURLConnection httpConn = (HttpURLConnection) URLObject
 				.openConnection();
@@ -62,6 +69,9 @@ public class FileDownloader implements Downloadable, Resumable {
 		httpConn.connect();
 		int responseCode = httpConn.getResponseCode();
 		if (responseCode / 100 != 2) {
+			System.out
+					.println(" Unable to estabish connection with given URL ");
+			status = FileUtility.INPUT_ERROR;
 			return null;
 		}
 		size = downloaded + httpConn.getContentLength();
@@ -80,8 +90,13 @@ public class FileDownloader implements Downloadable, Resumable {
 	}
 
 	// read bytes array continuously from input stream and write it into file
-	public long processStream(InputStream inputStream, File file)
+	public void processStream(InputStream inputStream, File file)
 			throws IOException {
+
+		if (inputStream == null || file == null) {
+			status = FileUtility.INPUT_ERROR;
+			return;
+		}
 
 		byte[] buffer = new byte[BUFFER_SIZE];
 		RandomAccessFile downloadFile = new RandomAccessFile(file, "rw");
@@ -102,7 +117,7 @@ public class FileDownloader implements Downloadable, Resumable {
 		downloadFile.close();
 		status = FileUtility.DOWNLOAD_COMPLETED;
 
-		return downloaded;
+		return;
 	}
 
 	// pauses download by closing input stream
@@ -114,7 +129,7 @@ public class FileDownloader implements Downloadable, Resumable {
 	// resumes download from URL and at given location
 	public void resumeDownload(String URL, String location) throws IOException {
 
-		status = FileUtility.DownlOAD_RESUMED;
+		status = FileUtility.DOWNLOAD_RESUMED;
 		InputStream inputStream = startDownload(URL, location);
 
 		processStream(inputStream, new File(location + fileName));
