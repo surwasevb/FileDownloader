@@ -33,10 +33,10 @@ public class Main {
       fileDownloader.processStream(inputStream, new File(directoryLocation + File.separator
           + fileDownloader.getFileName()));
     } catch (UnknownHostException e) {
-      FileDownloader.status = FileHelper.INPUT_ERROR;
+      FileDownloader.status = DownloadStatus.ERROR;
       System.out.println("unable to establish connection with URL of given name");
     } catch (Exception e) {
-      FileDownloader.status = FileHelper.INPUT_ERROR;
+      FileDownloader.status = DownloadStatus.ERROR;
       System.out.println(e.getMessage());
     }
 
@@ -71,9 +71,9 @@ public class Main {
     }
 
     public void run() {
-      if (FileDownloader.status != FileHelper.DOWNLOAD_COMPLETED
-          && FileDownloader.status != FileHelper.INPUT_ERROR) {
-        FileDownloader.status = FileHelper.DOWNLOAD_INTERRUPTED;
+      if (FileDownloader.status != DownloadStatus.COMPLETED
+          && FileDownloader.status != DownloadStatus.ERROR) {
+        FileDownloader.status = DownloadStatus.INTERRUPTED;
         System.out.println(" Download is not completed. Do you want to abort? (yes/no): ");
         if (new Scanner(System.in).next().equalsIgnoreCase("no")) {
           FileDownloader fileDownloader = new FileDownloader();
@@ -89,7 +89,7 @@ public class Main {
 
   private static void error() {
     System.out.print(" Invalid input parameters : ");
-    System.out.print(" Enter two parameters one for url and second for download location on machine \n");
+    System.out.print(" <Command> <URL> <location>\n");
     System.exit(0);
   }
 

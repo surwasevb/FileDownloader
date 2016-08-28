@@ -22,7 +22,7 @@ public class FileDownloader implements Downloadable, Resumable {
   private String fileName;
 
   // status of downloading
-  public static String status;
+  public static DownloadStatus status;
 
   public FileDownloader() {
     size = -1;
@@ -47,7 +47,7 @@ public class FileDownloader implements Downloadable, Resumable {
     // check directory of given location exists
     if (!FileHelper.checkDirectoryExists(location)) {
       System.out.println(" Directory of given name does not exist ");
-      status = FileHelper.INPUT_ERROR;
+      status = DownloadStatus.ERROR;
       throw new IOException();
     }
 
@@ -66,9 +66,9 @@ public class FileDownloader implements Downloadable, Resumable {
 
     httpConn.connect();
     int responseCode = httpConn.getResponseCode();
-    if (responseCode != 200  && responseCode != 206) {
+    if (responseCode != 200 && responseCode != 206) {
       System.out.println(" Unable to estabish connection with given URL ");
-      status = FileHelper.INPUT_ERROR;
+      status = DownloadStatus.ERROR;
       throw new IOException();
     }
     size = downloaded + httpConn.getContentLength();
@@ -76,21 +76,21 @@ public class FileDownloader implements Downloadable, Resumable {
     fileName = fileName.equals("") ? FileHelper.getFileNameFromURL(URLObject) : fileName;
     // opens input stream from the HTTP connection
     InputStream inputStream = httpConn.getInputStream();
-    status = FileHelper.DOWNLOAD_STARTED;
+    status = DownloadStatus.STARTED;
     return inputStream;
   }
 
   // read bytes array continuously from input stream and write it into file
   public void processStream(InputStream inputStream, File file) throws IOException {
     if (inputStream == null || file == null) {
-      status = FileHelper.INPUT_ERROR;
+      status = DownloadStatus.ERROR;
       return;
     }
     byte[] buffer = new byte[BUFFER_SIZE];
     RandomAccessFile downloadFile = new RandomAccessFile(file, "rw");
     downloadFile.seek(downloaded);
 
-    while (downloaded < size && status == FileHelper.DOWNLOAD_STARTED) {
+    while (downloaded < size && status == DownloadStatus.STARTED) {
       int readCount = inputStream.read(buffer);
       if (readCount == -1)
         break;
@@ -101,20 +101,20 @@ public class FileDownloader implements Downloadable, Resumable {
     }
     inputStream.close();
     downloadFile.close();
-    status = FileHelper.DOWNLOAD_COMPLETED;
-    
+    status = DownloadStatus.COMPLETED;
+
     return;
   }
 
   // pauses download by closing input stream
   public void pauseDownload(InputStream inputStream) throws IOException {
     inputStream.close();
-    status = FileHelper.DOWNLOAD_PAUSED;
+    status = DownloadStatus.PAUSED;
   }
 
   // resumes download from URL and at given location
   public void resumeDownload(String URL, String location) throws IOException {
-    status = FileHelper.DOWNLOAD_RESUMED;
+    status = DownloadStatus.RESUMED;
     InputStream inputStream = startDownload(URL, location);
     processStream(inputStream, new File(location + fileName));
   }
