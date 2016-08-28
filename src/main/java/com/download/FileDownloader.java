@@ -40,6 +40,10 @@ public class FileDownloader implements Downloadable, Resumable {
   public String getFileName() {
     return fileName;
   }
+  
+  public void setSize(long size) {
+    this.size = size;
+  }
 
   // establish connection using URL and get InputStream from that connection
   public InputStream startDownload(String fileURL, String location) throws IOException {
@@ -105,6 +109,8 @@ public class FileDownloader implements Downloadable, Resumable {
 
     return;
   }
+
+ 
 
   // pauses download by closing input stream
   public void pauseDownload(InputStream inputStream) throws IOException {
