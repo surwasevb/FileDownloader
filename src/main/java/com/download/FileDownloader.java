@@ -21,6 +21,9 @@ public class FileDownloader implements Downloadable, Resumable {
 	// name of file to be downloaded
 	private String fileName;
 
+	// status of downloading
+	public static String status;
+
 	public FileDownloader() {
 		size = -1;
 		downloaded = 0;
@@ -39,14 +42,21 @@ public class FileDownloader implements Downloadable, Resumable {
 	}
 
 	// establish connection using URL and get InputStream from that connection
-	public InputStream startDownload(String fileURL) throws IOException {
+	public InputStream startDownload(String fileURL, String location)
+			throws IOException {
 
-		URL URLObject;
-		InputStream inputStream = null;
-
-		URLObject = new URL(fileURL);
+		URL URLObject = new URL(fileURL);
 		HttpURLConnection httpConn = (HttpURLConnection) URLObject
 				.openConnection();
+
+		// get the name of file
+		fileName = FileUtility.getFileNameFromURL(URLObject);
+
+		String localFileName = location + File.separator + fileName;
+		// check if file exists
+		if (FileUtility.checkFileExists(localFileName))
+			downloaded = new File(localFileName).length();
+
 		httpConn.setRequestProperty("Range", "bytes=" + downloaded + "-");
 
 		httpConn.connect();
@@ -54,7 +64,7 @@ public class FileDownloader implements Downloadable, Resumable {
 		if (responseCode / 100 != 2) {
 			return null;
 		}
-		size = httpConn.getContentLength();
+		size = downloaded + httpConn.getContentLength();
 
 		fileName = FileUtility.getFileNameFromHeader(httpConn
 				.getHeaderField("Content-Disposition"));
@@ -62,7 +72,9 @@ public class FileDownloader implements Downloadable, Resumable {
 				.getFileNameFromURL(URLObject) : fileName;
 
 		// opens input stream from the HTTP connection
-		inputStream = httpConn.getInputStream();
+		InputStream inputStream = httpConn.getInputStream();
+
+		status = FileUtility.DOWNLOAD_STARTED;
 
 		return inputStream;
 	}
@@ -75,7 +87,7 @@ public class FileDownloader implements Downloadable, Resumable {
 		RandomAccessFile downloadFile = new RandomAccessFile(file, "rw");
 		downloadFile.seek(downloaded);
 
-		while (downloaded < size) {
+		while (downloaded < size && status == FileUtility.DOWNLOAD_STARTED) {
 
 			int readCount = inputStream.read(buffer);
 			if (readCount == -1)
@@ -88,6 +100,7 @@ public class FileDownloader implements Downloadable, Resumable {
 
 		inputStream.close();
 		downloadFile.close();
+		status = FileUtility.DOWNLOAD_COMPLETED;
 
 		return downloaded;
 	}
@@ -95,12 +108,14 @@ public class FileDownloader implements Downloadable, Resumable {
 	// pauses download by closing input stream
 	public void pauseDownload(InputStream inputStream) throws IOException {
 		inputStream.close();
+		status = FileUtility.DOWNLOAD_PAUSED;
 	}
 
 	// resumes download from URL and at given location
 	public void resumeDownload(String URL, String location) throws IOException {
 
-		InputStream inputStream = startDownload(URL);
+		status = FileUtility.DownlOAD_RESUMED;
+		InputStream inputStream = startDownload(URL, location);
 
 		processStream(inputStream, new File(location + fileName));
 

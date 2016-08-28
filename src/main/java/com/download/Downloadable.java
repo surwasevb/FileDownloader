@@ -15,7 +15,7 @@ import java.io.InputStream;
  */
 public interface Downloadable {
 
-	InputStream startDownload(String URL) throws IOException;
+	InputStream startDownload(String URL, String location) throws IOException;
 
 	long processStream(InputStream inputStream, File writer) throws IOException;
 

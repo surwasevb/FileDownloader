@@ -14,6 +14,12 @@ import java.net.URL;
  */
 public class FileUtility {
 
+	public static final String DOWNLOAD_STARTED = "Downloading";
+	public static final String DOWNLOAD_PAUSED = "Paused";
+	public static final String DOWNLOAD_COMPLETED = "Completed";
+	public static final String DownlOAD_RESUMED = "Resumed";
+	public static final String DOWNLOAD_INTERRUPTED = "Interrupted";
+
 	// Get file name from portion of URL.
 	public static String getFileNameFromURL(URL url) {
 
@@ -50,10 +56,10 @@ public class FileUtility {
 
 	// show progress of download
 	public static void showDownloadProgress(long downloaded, long size) {
-		int percentageOfDownload = (int) (downloaded*100/size);
+		int percentageOfDownload = (int) (downloaded * 100 / size);
 		System.out.print("\r");
-		System.out.print(" Downloading " + percentageOfDownload  + "%");
-		if(downloaded == size){
+		System.out.print(" Downloading " + percentageOfDownload + "%");
+		if (downloaded == size) {
 			System.out.print("\r");
 			System.out.print(" Download Complete \n");
 		}
