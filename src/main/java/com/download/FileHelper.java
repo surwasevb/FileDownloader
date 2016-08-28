@@ -11,6 +11,8 @@ import java.net.URL;
  */
 public class FileHelper {
 
+  private static int fileNameHeaderLength = 10;
+
   // Get file name from portion of URL.
   public static String getFileNameFromURL(URL url) {
     String fileName = url.getFile();
@@ -23,7 +25,7 @@ public class FileHelper {
     if (disposition != null) {
       int index = disposition.indexOf("filename=");
       if (index > 0) {
-        fileName = disposition.substring(index + 10, disposition.length() - 1);
+        fileName = disposition.substring(index + fileNameHeaderLength, disposition.length() - 1);
       }
     }
     return fileName;
