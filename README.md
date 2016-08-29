@@ -1,4 +1,4 @@
-# FileDownloader
+# FileDownloader ![Build Status](https://travis-ci.org/surwasevb/FileDownloader.svg?branch=master)
 
 This is command line utility for downloading file from URL. User need to specify the URL and directory location in the input.
 
