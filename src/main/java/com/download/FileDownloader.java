@@ -122,7 +122,7 @@ public class FileDownloader implements Downloadable, Resumable {
   public void resumeDownload(String URL, String location) throws IOException {
     status = DownloadStatus.RESUMED;
     InputStream inputStream = startDownload(URL, location);
-    processStream(inputStream, new File(location + fileName));
+    processStream(inputStream, new File(location + File.separator +fileName));
   }
 
 }
