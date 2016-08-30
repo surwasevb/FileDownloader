@@ -46,7 +46,7 @@ public class FileDownloader implements Downloadable, Resumable {
   }
 
   // establish connection using URL and get InputStream from that connection
-  public InputStream startDownload(String fileURL, String location) throws IOException {
+  public InputStream startDownload(URL fileURL, String location) throws IOException {
 
     // check directory of given location exists
     if (!FileHelper.checkDirectoryExists(location)) {
@@ -55,11 +55,10 @@ public class FileDownloader implements Downloadable, Resumable {
       throw new IOException();
     }
 
-    URL URLObject = new URL(fileURL);
-    HttpURLConnection httpConn = (HttpURLConnection) URLObject.openConnection();
+    HttpURLConnection httpConn = (HttpURLConnection) fileURL.openConnection();
 
     // get the name of file
-    fileName = FileHelper.getFileNameFromURL(URLObject);
+    fileName = FileHelper.getFileNameFromURL(fileURL);
 
     String localFileName = location + File.separator + fileName;
     // check if file exists
@@ -76,8 +75,8 @@ public class FileDownloader implements Downloadable, Resumable {
       throw new IOException();
     }
     size = downloaded + httpConn.getContentLength();
-    fileName = FileHelper.getFileNameFromHeader(httpConn.getHeaderField("Content-Disposition"));
-    fileName = fileName.equals("") ? FileHelper.getFileNameFromURL(URLObject) : fileName;
+    String fileNameFromHeader = FileHelper.getFileNameFromHeader(httpConn.getHeaderField("Content-Disposition"));
+    fileName = fileNameFromHeader.equals("") ? FileHelper.getFileNameFromURL(fileURL) : fileNameFromHeader;
     // opens input stream from the HTTP connection
     InputStream inputStream = httpConn.getInputStream();
     status = DownloadStatus.STARTED;
@@ -119,7 +118,7 @@ public class FileDownloader implements Downloadable, Resumable {
   }
 
   // resumes download from URL and at given location
-  public void resumeDownload(String URL, String location) throws IOException {
+  public void resumeDownload(URL URL, String location) throws IOException {
     status = DownloadStatus.RESUMED;
     InputStream inputStream = startDownload(URL, location);
     processStream(inputStream, new File(location + File.separator +fileName));

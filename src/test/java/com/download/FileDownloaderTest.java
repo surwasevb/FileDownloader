@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -52,16 +53,11 @@ public class FileDownloaderTest {
     inputStream.read();
   }
 
-  @Test(expected = IOException.class)
+  @Test
   public void shouldResumeDownload() throws IOException {
 
-    FileDownloader fileDownloader = new FileDownloader();
-    String fileURL = this.getClass().getResource("/test-input-file.xml").getFile();
-    try {
-      fileDownloader.resumeDownload(fileURL, ".");
-    } catch (IOException e) {
-      assertEquals(FileDownloader.status, DownloadStatus.RESUMED);
-      throw e;
-    }
+    FileDownloader fileDownloader = new FileDownloader();    
+    fileDownloader.resumeDownload(new URL("https://docs.oracle.com/javase/7/docs/api/java/net/URL.html"), ".");
+    assertEquals(FileDownloader.status, DownloadStatus.COMPLETED);
   }
 }

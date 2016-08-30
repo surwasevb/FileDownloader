@@ -3,6 +3,7 @@ package com.download;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
@@ -29,7 +30,7 @@ public class Main {
 
     FileDownloader fileDownloader = new FileDownloader();
     try {
-      InputStream inputStream = fileDownloader.startDownload(fileURL, directoryLocation);
+      InputStream inputStream = fileDownloader.startDownload(new URL(fileURL), directoryLocation);
       fileDownloader.processStream(inputStream, new File(directoryLocation + File.separator
           + fileDownloader.getFileName()));
     } catch (UnknownHostException e) {
@@ -78,7 +79,7 @@ public class Main {
         if (new Scanner(System.in).next().equalsIgnoreCase("no")) {
           FileDownloader fileDownloader = new FileDownloader();
           try {
-            fileDownloader.resumeDownload(this.getFileURL(), this.getLocation());
+            fileDownloader.resumeDownload(new URL(this.getFileURL()), this.getLocation());
           } catch (IOException e) {
             System.out.println(e.getMessage());
           }
