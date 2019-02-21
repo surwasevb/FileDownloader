@@ -8,4 +8,5 @@ build/
 .classpath
 .settings/
 .idea/
+out/
 *.iml
