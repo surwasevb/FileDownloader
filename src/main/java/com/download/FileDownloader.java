@@ -22,26 +22,18 @@ public class FileDownloader implements Downloadable, Resumable {
     private String fileName;
 
     // status of downloading
-    public static DownloadStatus status;
+    private static DownloadStatus status;
 
-    public FileDownloader() {
+    FileDownloader() {
         size = -1;
         downloaded = 0;
     }
 
-    public long getSize() {
-        return size;
-    }
-
-    public long getDownloaded() {
-        return downloaded;
-    }
-
-    public String getFileName() {
+    String getFileName() {
         return fileName;
     }
 
-    public void setSize(long size) {
+    void setSize(long size) {
         this.size = size;
     }
 
@@ -106,7 +98,6 @@ public class FileDownloader implements Downloadable, Resumable {
         downloadFile.close();
         status = DownloadStatus.COMPLETED;
 
-        return;
     }
 
 
