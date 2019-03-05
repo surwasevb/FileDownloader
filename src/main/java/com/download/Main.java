@@ -48,19 +48,19 @@ public class Main {
         private String fileURL;
         private String location;
 
-        public String getFileURL() {
+        String getFileURL() {
             return fileURL;
         }
 
-        public void setFileURL(String fileURL) {
+        void setFileURL(String fileURL) {
             this.fileURL = fileURL;
         }
 
-        public String getLocation() {
+        String getLocation() {
             return location;
         }
 
-        public void setLocation(String location) {
+        void setLocation(String location) {
             this.location = location;
         }
 
