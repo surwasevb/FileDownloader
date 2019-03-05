@@ -22,7 +22,7 @@ public class FileDownloader implements Downloadable, Resumable {
     private String fileName;
 
     // status of downloading
-    private static DownloadStatus status;
+    static DownloadStatus status;
 
     FileDownloader() {
         size = -1;
